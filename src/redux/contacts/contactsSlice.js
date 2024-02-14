@@ -1,16 +1,10 @@
-import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import {
-  addContactRequest,
-  allContactsRequest,
-  deleteContactRequest,
-} from 'services/api';
-import { STATUSES } from 'services/constants';
+import { createAsyncThunk, createSlice, isAnyOf } from '@reduxjs/toolkit';
+import { apiInstance, setToken } from 'services/api';
 
 const initialState = {
   contacts: {
     items: [],
-    status: STATUSES.idle,
-    isLoading: false,
+    contactsLoading: false,
     error: null,
   },
   filter: '',
@@ -19,9 +13,25 @@ const initialState = {
 export const fetchAllContacts = createAsyncThunk(
   'contacts/fetchAll',
   async (_, thunkAPI) => {
+    const state = thunkAPI.getState();
+    const token = state.auth.token;
+    setToken(token);
     try {
-      const response = await allContactsRequest();
-      return response;
+      const { data } = await apiInstance.get('/contacts');
+      return data;
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error.message);
+    }
+  }
+);
+
+export const addContact = createAsyncThunk(
+  'contacts/addContact',
+  async (contactData, thunkAPI) => {
+    try {
+      const { data } = await apiInstance.post('/contacts', contactData);
+      console.log(data);
+      return data;
     } catch (error) {
       return thunkAPI.rejectWithValue(error.message);
     }
@@ -32,36 +42,17 @@ export const deleteContact = createAsyncThunk(
   'contacts/deleteContact',
   async (contactId, thunkAPI) => {
     try {
-      const response = await deleteContactRequest(contactId);
+      console.log(contactId);
+      const response = await apiInstance.delete(
+        '/contacts/{contactId}',
+        contactId
+      );
       return response;
     } catch (error) {
       return thunkAPI.rejectWithValue(error.message);
     }
   }
 );
-
-export const addContact = createAsyncThunk(
-  'contacts/addContact',
-  async (contact, thunkAPI) => {
-    try {
-      const response = await addContactRequest(contact);
-      return response.data;
-    } catch (error) {
-      return thunkAPI.rejectWithValue(error.message);
-    }
-  }
-);
-
-const pendingCallback = state => {
-  state.isLoading = true;
-  state.status = STATUSES.pending;
-  state.error = null;
-};
-const errorCallback = (state, action) => {
-  state.isLoading = false;
-  state.status = STATUSES.error;
-  state.error = action.payload;
-};
 
 const contactsSlice = createSlice({
   name: 'contactsData',
@@ -73,29 +64,42 @@ const contactsSlice = createSlice({
   },
   extraReducers: builder => {
     builder
-      .addCase(fetchAllContacts.pending, pendingCallback)
       .addCase(fetchAllContacts.fulfilled, (state, action) => {
-        state.status = STATUSES.success;
         state.isLoading = false;
         state.contacts.items = action.payload;
       })
-      .addCase(fetchAllContacts.rejected, errorCallback)
-      .addCase(deleteContact.pending, pendingCallback)
+      .addCase(addContact.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.contacts.items.push(action.payload);
+      })
       .addCase(deleteContact.fulfilled, (state, action) => {
-        state.status = STATUSES.success;
         state.isLoading = false;
         state.contacts.items = state.contacts.items.filter(contact => {
           return contact.id !== action.payload.data.id;
         });
       })
-      .addCase(deleteContact.rejected, errorCallback)
-      .addCase(addContact.pending, pendingCallback)
-      .addCase(addContact.fulfilled, (state, action) => {
-        state.status = STATUSES.success;
-        state.isLoading = false;
-        state.contacts.items.push(action.payload);
-      })
-      .addCase(addContact.rejected, errorCallback);
+      .addMatcher(
+        isAnyOf(
+          addContact.rejected,
+          deleteContact.rejected,
+          fetchAllContacts.rejected
+        ),
+        (state, action) => {
+          state.isLoading = false;
+          state.error = action.payload;
+        }
+      )
+      .addMatcher(
+        isAnyOf(
+          addContact.pending,
+          deleteContact.pending,
+          fetchAllContacts.pending
+        ),
+        state => {
+          state.isLoading = true;
+          state.error = null;
+        }
+      );
   },
 });
 

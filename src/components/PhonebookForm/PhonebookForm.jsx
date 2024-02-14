@@ -1,5 +1,5 @@
 import { useDispatch } from 'react-redux'
-import { Button, CheckLabel, Form, Input, Label, Span } from './PhonebookForm.styled'
+import { Button, Form, Input, Label, Span } from './PhonebookForm.styled'
 import { addContact } from '../../redux/contacts/contactsSlice'
 
 export const PhonebookForm = () => {
@@ -8,10 +8,8 @@ export const PhonebookForm = () => {
   const handleFormSubmit = (e) => {
     e.preventDefault()
     const name = e.currentTarget.elements.contactName.value
-    const phone = e.currentTarget.elements.contactNumber.value
-    const email = e.currentTarget.elements.contactEmail.value
-    const favourite = e.currentTarget.elements.contactFavourite.checked
-    const profileData = { name, phone, email, favourite }
+    const number = e.currentTarget.elements.contactNumber.value
+    const profileData = { name, number }
 
     dispatch(addContact(profileData))
     e.currentTarget.reset()
@@ -27,14 +25,6 @@ export const PhonebookForm = () => {
         <Span>Number</Span>
         <Input type="tel" name="contactNumber" placeholder='555-55-55' required />
       </Label>
-      <Label>
-        <Span>Email</Span>
-        <Input type="email" name="contactEmail" placeholder='mail@example.com' required />
-      </Label>
-      <CheckLabel>
-        <Span>Is Favourite?</Span>
-        <Input type="checkbox" name="contactFavourite" />
-      </CheckLabel>
       <Button type='submit'>Add Contact</Button>
     </Form>
   )

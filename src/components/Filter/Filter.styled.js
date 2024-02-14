@@ -1,4 +1,4 @@
-import { Input } from 'components/Form.jsx/PhonebookForm.styled';
+import { Input } from 'components/PhonebookForm/PhonebookForm.styled';
 import styled from 'styled-components';
 
 export const SearchField = styled(Input)`

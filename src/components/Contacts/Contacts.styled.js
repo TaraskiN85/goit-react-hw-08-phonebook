@@ -15,3 +15,7 @@ export const ContactsList = styled.ul`
   list-style: none;
   gap: 15px;
 `;
+
+export const P = styled.p`
+  color: #000;
+`;
