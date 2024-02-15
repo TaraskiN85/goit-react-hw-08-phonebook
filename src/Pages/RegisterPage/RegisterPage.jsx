@@ -24,6 +24,10 @@ const RegisterLoginPage = () => {
 
     if (!values.name) {
       errors.name = 'Required';
+    } else if (values.name.length <= 3) {
+      errors.name = 'Too short'
+    } else if (values.name.length > 20) {
+      errors.name = 'Too long'
     }
 
     if (!values.email) {
@@ -34,13 +38,14 @@ const RegisterLoginPage = () => {
 
     if (!values.password) {
       errors.password = 'Required';
+    } else if (values.password.length <= 7) {
+      errors.password = 'Too short'
     }
 
     return errors;
   };
 
   const handleSubmit = (formData, { setSubmitting }) => {
-    // Handle form submission logic here
     dispatch(registerUser(formData))
     console.log(formData);
     setSubmitting(false);

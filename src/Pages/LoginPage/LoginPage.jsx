@@ -36,12 +36,7 @@ const LoginPage = () => {
     return errors;
   };
 
-  const handleSubmit = (formData, { setSubmitting }) => {
-    // Handle form submission logic here
-    dispatch(loginUser(formData))
-   // console.log(formData);
-    // setSubmitting(false);
-  };
+  const handleSubmit = formData => dispatch(loginUser(formData))
 
   return (
     <PageBox>

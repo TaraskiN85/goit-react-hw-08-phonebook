@@ -14,13 +14,12 @@ import LoginPage from "./Pages/LoginPage/LoginPage";
 import HomePage from 'Pages/HomePage/HomePage';
 import { useEffect } from 'react';
 import { refreshUser } from './redux/auth/authSlice';
-import { useDispatch, useSelector } from 'react-redux';
-import { selectIsLoading, selectIsLoggedIn } from './redux/auth/authSlice.selectors';
+import { useDispatch } from 'react-redux';
+import PrivateRoute from 'components/PrivateRoute/PrivateRoute';
+import RestrictedRoute from 'components/RestrictedRoute/RestrictedRoute';
 
 export const App = () => {
   const dispatch = useDispatch()
-  const isLoggedIn = useSelector(selectIsLoggedIn)
-  const isLoading = useSelector(selectIsLoading)
 
   useEffect(() => {
     dispatch(refreshUser())
@@ -32,10 +31,10 @@ export const App = () => {
       <Layout>
         <Container>
           <Routes>
-            <Route path='/' element={<HomePage />} />
+            <Route path='/' element={<RestrictedRoute><HomePage /></RestrictedRoute>} />
             <Route path='/register' element={<RegisterPage />} />
             <Route path='/login' element={<LoginPage />} />
-            {isLoggedIn && !isLoading ? <Route path='/contacts' element={<ContactsPage />} /> : <Route path='/contacts' element={<HomePage />} />}
+            <Route path='/contacts' element={<PrivateRoute><ContactsPage /></PrivateRoute>} />
           </Routes>
         </Container>
       </Layout>

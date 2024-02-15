@@ -2,7 +2,7 @@ import { Formik, Form, Field, ErrorMessage } from 'formik';
 import styled from 'styled-components';
 
 export const PageBox = styled.div`
-  height: 60vh;
+  height: 70vh;
   width: 100%;
   margin: auto;
   display: flex;
