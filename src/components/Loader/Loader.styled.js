@@ -39,6 +39,7 @@ export const StyledSpinner = styled.svg`
 export const SmallStyledSpinner = styled(StyledSpinner)`
   width: 45px;
   height: 45px;
+  margin-right: 130px;
 
   & .path {
     stroke: #a52a2a;

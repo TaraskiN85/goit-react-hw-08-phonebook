@@ -13,7 +13,7 @@ export const Layout = ({ children }) => {
       <Header>
         <Container>
             <div>
-              <PhonebookTitle>Phonebook</PhonebookTitle>
+              <PhonebookTitle to='/'>Phonebook</PhonebookTitle>
               {isLoggedIn ? <UserMenu /> : <Navigation />}
             </div>
         </Container>

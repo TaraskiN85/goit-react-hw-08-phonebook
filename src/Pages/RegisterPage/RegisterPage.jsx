@@ -1,17 +1,10 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { Button, Input, InputBox, Label, PageBox, StyledError, StyledForm, StyledFormik, Title } from './RegisterPage.styled';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { registerUser } from '../../redux/auth/authSlice';
-import { useNavigate } from 'react-router';
-import { selectIsLoggedIn } from '../../redux/auth/authSlice.selectors';
 
 const RegisterLoginPage = () => {
   const dispatch = useDispatch();
-  const navigate = useNavigate();
-  const isLoggedIn = useSelector(selectIsLoggedIn)
-  useEffect(() => {
-    if (isLoggedIn) navigate('/contacts')
-  }, [isLoggedIn, navigate])
 
   const initialValues = {
     name: '',

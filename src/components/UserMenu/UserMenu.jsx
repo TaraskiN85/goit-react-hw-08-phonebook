@@ -3,7 +3,7 @@ import { Box } from './UserMenu.styled'
 import { useDispatch, useSelector } from 'react-redux'
 import { selectIsLoading, selectUser } from '../../redux/auth/authSlice.selectors'
 import { logoutUser } from '../../redux/auth/authSlice'
-import { SmallLoader } from 'helpers/Loader/Loader'
+import { SmallLoader } from 'components/Loader/Loader'
 
 export const UserMenu = () => {
   const userData = useSelector(selectUser)

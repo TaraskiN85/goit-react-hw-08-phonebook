@@ -1,24 +1,15 @@
-import React, { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import React from 'react';
 import { loginUser } from '../../redux/auth/authSlice';
-import { useNavigate } from 'react-router';
 import { Button, Input, InputBox, Label, PageBox, StyledError, StyledForm, StyledFormik, Title } from './LoginPage.styled';
-import { selectIsLoggedIn } from '../../redux/auth/authSlice.selectors';
+import { useDispatch } from 'react-redux';
 
 const LoginPage = () => {
   const dispatch = useDispatch();
-  const navigate = useNavigate();
-  const isLoggedIn = useSelector(selectIsLoggedIn)
 
   const initialValues = {
     email: '',
     password: '',
   };
-
-  useEffect(() => {
-    if (isLoggedIn) navigate('/contacts')
-  }, [isLoggedIn, navigate])
-
 
   const validateForm = (values) => {
     const errors = {};

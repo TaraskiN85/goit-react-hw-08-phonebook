@@ -31,9 +31,9 @@ export const App = () => {
       <Layout>
         <Container>
           <Routes>
-            <Route path='/' element={<RestrictedRoute><HomePage /></RestrictedRoute>} />
-            <Route path='/register' element={<RegisterPage />} />
-            <Route path='/login' element={<LoginPage />} />
+            <Route path='/' element={<HomePage />} />
+            <Route path='/register' element={<RestrictedRoute><RegisterPage /></RestrictedRoute>} />
+            <Route path='/login' element={<RestrictedRoute><LoginPage /></RestrictedRoute>} />
             <Route path='/contacts' element={<PrivateRoute><ContactsPage /></PrivateRoute>} />
           </Routes>
         </Container>

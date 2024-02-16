@@ -1,3 +1,4 @@
+import { NavLink } from 'react-router-dom';
 import styled from 'styled-components';
 
 export const Header = styled.header`
@@ -19,9 +20,10 @@ export const Container = styled.div`
   }
 `;
 
-export const PhonebookTitle = styled.h1`
+export const PhonebookTitle = styled(NavLink)`
   font-size: 2.8rem;
   align-items: left;
   font-weight: 700;
   color: #e9ebee;
+  text-decoration: none;
 `;
