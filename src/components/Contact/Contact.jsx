@@ -2,12 +2,14 @@ import React from 'react'
 import { Li } from './Contact.styled'
 import { useDispatch } from 'react-redux'
 import { deleteContact } from '../../redux/contacts/contactsSlice'
+import { toast } from 'react-toastify'
 
 const Contact = ({ contactData }) => {
   const dispatch = useDispatch()
 
   const handleDeleteContact = () => {
-    dispatch(deleteContact(contactData.id))
+    dispatch(deleteContact(contactData.id)).unwrap().then(() => toast.success(`${contactData.name} successfuly removed!`)).catch(error => toast.error(error))
+    
   }
 
   return (

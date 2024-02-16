@@ -28,6 +28,7 @@ export const Li = styled.li`
     display: flex;
     justify-content: space-between;
     width: 100%;
+    text-transform: capitalize;
   }
 
   > button {

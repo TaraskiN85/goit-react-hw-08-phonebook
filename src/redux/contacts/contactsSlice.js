@@ -1,5 +1,4 @@
 import { createAsyncThunk, createSlice, isAnyOf } from '@reduxjs/toolkit';
-import { toast } from 'react-toastify';
 import { apiInstance, setToken } from 'services/api';
 
 const initialState = {
@@ -31,8 +30,6 @@ export const addContact = createAsyncThunk(
   async (contactData, thunkAPI) => {
     try {
       const { data } = await apiInstance.post('/contacts', contactData);
-      console.log('first');
-      toast.success(`${contactData.name} added to Data Base!`);
       return data;
     } catch (error) {
       return thunkAPI.rejectWithValue(error.message);
@@ -45,10 +42,8 @@ export const deleteContact = createAsyncThunk(
   async (contactId, thunkAPI) => {
     try {
       const { data } = await apiInstance.delete(`/contacts/${contactId}`);
-      toast.success(`${data.name} successfuly removed!`);
       return data;
     } catch (error) {
-      toast.error(error.message);
       return thunkAPI.rejectWithValue(error.message);
     }
   }
@@ -75,7 +70,6 @@ const contactsSlice = createSlice({
       .addCase(deleteContact.fulfilled, (state, action) => {
         state.isLoading = false;
         state.contacts.items = state.contacts.items.filter(contact => {
-          console.log(action.payload);
           return contact.id !== action.payload.id;
         });
       })

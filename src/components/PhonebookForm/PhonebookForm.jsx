@@ -1,6 +1,7 @@
 import { useDispatch } from 'react-redux'
 import { Button, Form, Input, Label, Span } from './PhonebookForm.styled'
 import { addContact } from '../../redux/contacts/contactsSlice'
+import { toast } from 'react-toastify'
 
 export const PhonebookForm = () => {
   const dispatch = useDispatch()
@@ -11,10 +12,10 @@ export const PhonebookForm = () => {
     const number = e.currentTarget.elements.contactNumber.value
     const profileData = { name, number }
 
-    dispatch(addContact(profileData))
+    dispatch(addContact(profileData)).unwrap().then(() => toast.success(`${name} added to Data Base!`)).catch(error => toast.error(error))
     e.currentTarget.reset()
   }
-  
+
   return (
     <Form onSubmit={handleFormSubmit}>
       <Label>
